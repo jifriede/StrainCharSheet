@@ -1,3 +1,67 @@
+var damageButton = document.getElementById("damagebutton");
+var closeDamageButton = document.querySelector(".closedamage");
+var resetButton = document.getElementById("resetbutton");
+var confirmResetButton = document.getElementById("confirmresetbutton");
+var cancelResetButton = document.getElementById("cancelresetbutton");
+
+function openResetModal() {
+    var modal = document.getElementById("resetmodal");
+    if (modal) {
+        modal.style.display = "block";
+    }
+}
+
+function closeResetModal() {
+    var modal = document.getElementById("resetmodal");
+    if (modal) {
+        modal.style.display = "none";
+    }
+}
+
+resetButton.onclick = function() {
+    openResetModal();
+}
+
+cancelResetButton.onclick = function() {
+    closeResetModal();
+}
+
+confirmResetButton.onclick = function() {
+    document.getElementById('characterSheetForm').reset();
+    updateFatigueSlots();
+    updateSelectedFatigueSlot(1);
+    closeResetModal();
+}
+
+function openDamageModal() {
+    var modal = document.getElementById("damagemodal");
+    if (modal) {
+        modal.style.display = "block";
+    }
+}
+
+function closeDamageModal() {
+    var modal = document.getElementById("damagemodal");
+    if (modal) {
+        modal.style.display = "none";
+    }
+    document.getElementById('damageinput').value = 0;
+}
+
+damageButton.onclick = function() {
+    openDamageModal();
+}
+closeDamageButton.onclick = function() {
+    closeDamageModal();
+}
+window.onclick = function(event) {
+    var modal = document.getElementById("damagemodal");
+    if (event.target == modal) {
+        closeDamageModal();
+    }
+};
+
+
 function confirmReset() {
     if (window.confirm("Are you sure you want to clear the character sheet? This action cannot be undone.")) {
         document.getElementById('characterSheetForm').reset();
@@ -112,22 +176,6 @@ function updateFatigueSlots() {
 function applyActionToSelectedFatigueSlot(action) {
     const { dieInput, stateInput } = getFatigueSlotElements(selectedFatigueSlot);
 
-    if (action === 'add') {
-        stateInput.value = 'Fatigued';
-        dieInput.value = 8;
-        return;
-    }
-
-    if (action === 'bind') {
-        stateInput.value = 'Bound';
-        return;
-    }
-
-    if (action === 'sustain') {
-        stateInput.value = 'Sustained';
-        return;
-    }
-
     if (action === 'increase') {
         const currentValue = Number(dieInput.value || 0);
         dieInput.value = currentValue ? Math.min(currentValue + 2, 12) : 4;
@@ -143,8 +191,52 @@ function applyActionToSelectedFatigueSlot(action) {
     if (action === 'remove') {
         dieInput.value = '';
         stateInput.value = '';
+        return;
+    }
+
+    if (!dieInput.value) {
+        dieInput.value = 4;
+    }
+
+    if (action === 'fatigue') {
+        stateInput.value = 'Fatigued';
+        return;
+    }
+
+    if (action === 'bind') {
+        stateInput.value = 'Bound';
+        return;
+    }
+
+    if (action === 'sustain') {
+        stateInput.value = 'Sustained';
+        return;
     }
 }
+
+function modifyDamageStep(action) {
+    const damage = document.getElementById('damageinput') || { value: 0 };
+    if (action === '-10damage') {
+        damage.value = damage.value-10;
+    }
+    if (action === '-5damage') {
+        damage.value = damage.value-5;
+    }
+    if (action === '-1damage') {
+        damage.value = damage.value-1;
+    }
+    if (action === '+1damage') {
+        damage.value = Number(damage.value)+1;
+    }
+    if (action === '+5damage') {
+        damage.value = Number(damage.value)+5;
+    }
+    if (action === '+10damage') {
+        damage.value = Number(damage.value)+10;
+    }
+    document.getElementById('damageinput').value = damage.value;
+}
+
 
 document.getElementById('fatigueTable').addEventListener('click', function(event) {
     const cell = event.target.closest('td[id^="fatigue-slot-"]');
@@ -169,8 +261,51 @@ document.querySelectorAll('.skillbutton').forEach((button) => {
     });
 });
 
-document.getElementById('addDieButton').addEventListener('click', function() {
-    applyActionToSelectedFatigueSlot('add');
+document.querySelectorAll('.damagestepbutton').forEach((button) => {
+    button.addEventListener('click', function() {
+        modifyDamageStep(this.id);
+    });
+});
+
+const applyDamageButton = document.getElementById('applydamagebutton');
+if (applyDamageButton) {
+    applyDamageButton.addEventListener('click', function() {
+        const healthInput = document.getElementById('health');
+        const damageInput = document.getElementById('damageinput');
+        const maxHealthInput = document.getElementById('maxhealth');
+        const outputHealth = Math.max(Math.min(Number(healthInput.value) - Number(damageInput.value), Number(maxHealthInput.value)), 0);
+        document.getElementById('health').value = outputHealth;
+        closeDamageModal();
+    });
+}
+
+document.getElementById('usehealingsurgebutton').addEventListener('click', function() {
+    const healthInput = document.getElementById('health');
+    const healingSurgesInput = document.getElementById('healingsurges');
+    const maxhealthInput = document.getElementById('maxhealth');
+    const surgeValue = Math.floor(Number(maxhealthInput.value) / 2);
+    if (healthInput.value === maxhealthInput.value) {
+        return;
+    }
+    if (Number(healingSurgesInput.value) > 0) {
+        const outputHealth = Math.min(Number(healthInput.value) + surgeValue, Number(maxhealthInput.value));
+        document.getElementById('health').value = outputHealth;
+        healingSurgesInput.value = Number(healingSurgesInput.value) - 1;
+    }
+});
+
+document.getElementById('health').addEventListener('change', function() {
+    const healthValue = Number(this.value);
+    const maxHealthValue = Number(document.getElementById('maxhealth').value);
+    if (healthValue > maxHealthValue) {
+        this.value = maxHealthValue;
+    } else if (healthValue < 0) {
+        this.value = 0;
+    }
+});
+
+document.getElementById('fatigueButton').addEventListener('click', function() {
+    applyActionToSelectedFatigueSlot('fatigue');
 });
 
 document.getElementById('bindButton').addEventListener('click', function() {
@@ -201,10 +336,6 @@ document.getElementById('savebutton').addEventListener('click', function() {
 document.getElementById('loadbutton').addEventListener('click', function() {
     const fileInput = document.getElementById('loadsheet');
     loadCharacter(fileInput.files[0]);
-});
-
-document.getElementById('resetbutton').addEventListener('click', function() {
-    confirmReset();
 });
 
 document.getElementById('powerscore').addEventListener('input', updateFatigueSlots);

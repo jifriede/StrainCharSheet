@@ -23,7 +23,23 @@
             <option value="Leader">
             <option value="Striker">
         </datalist>
-        <br><label for = "level">Level:</label> <input type="number" id="level" name="level" min = "1" max = "10">
+        <br><label for = "level">Level:</label> <input type="number" id="level" name="level" min = "1" max = "10" value = "1"><br>
+        <div id="damagemodal" class="modal">
+            <div class = "modalcontent" style = "text-align: center;">
+                <span class = "closedamage">&times;</span>
+                <p>Enter the amount of damage taken (Negative is healing)</p>
+                <p>
+                <button type="button" id="-10damage" class="damagestepbutton">-10</button>
+                <button type="button" id="-5damage" class="damagestepbutton">-5</button>
+                <button type="button" id="-1damage" class="damagestepbutton">-1</button>
+                <input type="number" id="damageinput" name="damageinput" min="-1000" max="1000" value="0">
+                <button type="button" id="+1damage" class="damagestepbutton">+1</button>
+                <button type="button" id="+5damage" class="damagestepbutton">+5</button>
+                <button type="button" id="+10damage" class="damagestepbutton">+10</button>
+                </p>
+                <button type="button" id="applydamagebutton">Apply</button>
+            </div>
+        </div>
         <table>
             <tr>
                 <td>
@@ -44,12 +60,13 @@
             </tr>
             <tr>
                 <td colspan="3">
-                    <label for = "health">Health:</label> <input type="number" id="health" name="health" min = "0" max = "1000"><br>
-                    <label for = "maxhealth">Max Health:</label> <input type="number" id="maxhealth" name="maxhealth" min = "0" max = "1000">
+                    <label for = "health">Health:</label> <input type="number" id="health" name="health" min = "0" max = "1000" value = "32"> <button type="button" id="damagebutton">Take Damage</button><br>
+                    <label for = "maxhealth">Max Health:</label> <input type="number" id="maxhealth" name="maxhealth" min = "0" max = "1000" value = "32">
                 </td>
                 <td colspan="2">
-                    <label for = "healingsurges">Healing Surges:</label> <input type="number" id="healingsurges" name="healingsurges" min = "0" max = "10"><br>
-                    <label for = "maxhealingsurges">Max Healing Surges:</label> <input type="number" id="maxhealingsurges" name="maxhealingsurges" min = "0" max = "10">
+                    <label for = "healingsurges">Healing Surges:</label> <input type="number" id="healingsurges" name="healingsurges" min = "0" max = "10" value = "8">
+                    <button type="button" id="usehealingsurgebutton">Heal</button><br>
+                    <label for = "maxhealingsurges">Max Healing Surges:</label> <input type="number" id="maxhealingsurges" name="maxhealingsurges" min = "0" max = "10" value = "8">
                 </td>
             </tr>
             <tr>
@@ -90,7 +107,7 @@
         <table id="fatigueTable">
             <tr>
                 <td colspan="6">
-                    <p>Power Score:<input type="number" id="powerscore" name="powerscore" min="1" max="6" placeholder="1"></p>
+                    <p>Power Score:<input type="number" id="powerscore" name="powerscore" min="1" max="6" value="1"></p>
                 </td>
             </tr>
             <tr>
@@ -120,18 +137,25 @@
                 </td>
             </tr>
         </table>
-        <button id = "addDieButton" type="button">Add Die/Fatigue</button>
+        <button id = "fatigueButton" type="button">Fatigue</button>
         <button id = "bindButton" type="button">Bind</button>
         <button id = "sustainButton" type="button">Sustain</button>
         <button id = "increaseSizeButton" type="button">Increase Size</button>
         <button id = "decreaseSizeButton" type="button">Decrease Size</button>
-        <button id = "removeDieButton" type="button">Remove Die</button><br>
+        <button id = "removeDieButton" type="button">Clear Die</button><br>
         <textarea id="notes" name="notes" rows="15" cols="60" placeholder="Notes and Features"></textarea><br>
         <button id="savebutton" type="button">Save Sheet</button>
         <input type = "file" id = "loadsheet" name="loadsheet" accept=".json">
         <button id="loadbutton" type="button">Load Sheet</button>
         <button id="resetbutton" type="button">Clear Sheet</button>
-        <script src="CharSheetjs.js"></script>
+        <div id = "resetmodal" class = "modal">
+            <div class = "modalcontent" style = "text-align: center;">
+                <p>Are you sure you want to clear the sheet? This cannot be undone.</p>
+                <button type="button" id="confirmresetbutton">Yes</button>
+                <button type="button" id="cancelresetbutton">No</button>
+            </div>
+        </div>
+        <script src="CharSheetjs.js" defer></script>
         </form>
     </body>
 </html>
