@@ -159,7 +159,7 @@ document.getElementById('fatigueTable').addEventListener('click', function(event
 
 document.querySelectorAll('.skillbutton').forEach((button) => {
     button.addEventListener('click', function() {
-        const skillInput = this.nextElementSibling.nextElementSibling;
+        const skillInput = this.nextElementSibling;
         const currentValue = Number(skillInput.value || 0);
         if (this.checked) {
             skillInput.value = currentValue + 2;
