@@ -28,6 +28,7 @@ cancelResetButton.onclick = function() {
 
 confirmResetButton.onclick = function() {
     document.getElementById('characterSheetForm').reset();
+    setEnableSensitive();
     updateFatigueSlots();
     updateSelectedFatigueSlot(1);
     closeResetModal();
@@ -61,13 +62,16 @@ window.onclick = function(event) {
     }
 };
 
+function setDisableSensitive() {
+    document.querySelectorAll('.sensitive').forEach((element) => {
+        element.disabled = true;
+    });
+}
 
-function confirmReset() {
-    if (window.confirm("Are you sure you want to clear the character sheet? This action cannot be undone.")) {
-        document.getElementById('characterSheetForm').reset();
-        updateFatigueSlots();
-        updateSelectedFatigueSlot(1);
-    }
+function setEnableSensitive() {
+    document.querySelectorAll('.sensitive').forEach((element) => {
+        element.disabled = false;
+    });
 }
 
 function collectCharacterData() {
@@ -123,7 +127,7 @@ function loadCharacter(file) {
         });
         updateFatigueSlots();
     };
-
+    setDisableSensitive();
     reader.readAsText(file);
 }
 
@@ -336,6 +340,14 @@ document.getElementById('savebutton').addEventListener('click', function() {
 document.getElementById('loadbutton').addEventListener('click', function() {
     const fileInput = document.getElementById('loadsheet');
     loadCharacter(fileInput.files[0]);
+});
+
+document.getElementById('enablesensitivebutton').addEventListener('click', function() {
+    setEnableSensitive();
+});
+
+document.getElementById('disablesensitivebutton').addEventListener('click', function() {
+    setDisableSensitive();
 });
 
 document.getElementById('powerscore').addEventListener('input', updateFatigueSlots);

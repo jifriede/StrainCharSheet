@@ -8,6 +8,7 @@ button {
     background-color: rgb(230, 230, 230);
     color: rgb(0, 0, 0);
     cursor: pointer;
+    font: inherit;
 }
 table, td {
     border: 1px solid rgb(20, 25, 25);
@@ -15,12 +16,30 @@ table, td {
 }
 td.selected-fatigue-slot {
     outline: 2px solid rgb(40, 50, 50);
-    background-color: rgb(240, 240, 240);
 }
 input {
     background-color: rgb(230, 230, 230);
     color: rgb(0, 0, 0);
     border: rgb(230, 230, 230) solid 0px;
+    font: inherit;
+}
+input[type="number"] {
+    width: 2em;
+}
+input.wide[type="number"] {
+    width: 3em;
+}
+input[type="number"]:disabled {
+    appearance: textfield;
+    -moz-appearance: textfield;
+}
+input.sensitive[type="number"]:disabled::-webkit-inner-spin-button,
+input.sensitive[type="number"]:disabled::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+input:disabled{
+    background-color: rgb(255, 255, 255);
 }
 textarea {
     background-color: rgb(230, 230, 230);

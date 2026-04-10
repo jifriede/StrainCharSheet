@@ -7,8 +7,8 @@
     </head>
     <body>
         <form id="characterSheetForm">
-        <label for = "name">Name:</label> <input type="text" id = "name" name="name"><br>
-        <label for = "powersourceinput">Power Source:</label> <input list="powersource" id="powersourceinput" name="powersourceinput">
+        <label for = "name">Name:</label> <input type="text" id = "name" name="name" class="sensitive"><br>
+        <label for = "powersourceinput">Power Source:</label> <input list="powersource" id="powersourceinput" name="powersourceinput" class="sensitive">
         <datalist id="powersource">
             <option value="Arcane">
             <option value="Elemental">
@@ -17,13 +17,13 @@
             <option value="Psionic">
             <option value="Valour">
         </datalist>
-        <br><label for = "roleinput">Role:</label> <input list="role" id="roleinput" name="roleinput">
+        <br><label for = "roleinput">Role:</label> <input list="role" id="roleinput" name="roleinput" class="sensitive">
         <datalist id="role">
             <option value="Defender">
             <option value="Leader">
             <option value="Striker">
         </datalist>
-        <br><label for = "level">Level:</label> <input type="number" id="level" name="level" min = "1" max = "10" value = "1"><br>
+        <br><label for = "level">Level:</label> <input type="number" id="level" name="level" min = "1" max = "10" value = "1" class="sensitive"><br>
         <div id="damagemodal" class="modal">
             <div class = "modalcontent" style = "text-align: center;">
                 <span class = "closedamage">&times;</span>
@@ -43,97 +43,97 @@
         <table>
             <tr>
                 <td>
-                    <label for = "xp">XP:</label> <input type="number" id="xp" name="xp" min = "0" max = "1000">
+                    <label for = "xp">XP:</label> <input type="number" id="xp" name="xp" min = "0" max = "1000" class="sensitive wide">
                 </td>
                 <td>
-                    <label for = "momentum">Momentum:</label> <input type="number" id="momentum" name="momentum" min = "0" max = "8">
+                    <label for = "momentum">Momentum:</label> <input type="number" id="momentum" name="momentum" min = "0" max = "8" class="sensitive">
                 </td>
                 <td>
-                    <label for = "attunement">Attunement:</label> <input type="number" id="attunement" name="attunement" min = "0" max = "12">
+                    <label for = "attunement">Attunement:</label> <input type="number" id="attunement" name="attunement" min = "0" max = "12" class="sensitive">
                 </td>
                 <td>
-                    <label for = "evasion">Evasion:</label> <input type="number" id="evasion" name="evasion" min = "0" max = "10">
+                    <label for = "evasion">Evasion:</label> <input type="number" id="evasion" name="evasion" min = "0" max = "10" class="sensitive">
                 </td>
                 <td>
-                    <label for = "resilience">Resilience:</label> <input type="number" id="resilience" name="resilience" min = "0" max = "10">
+                    <label for = "resilience">Resilience:</label> <input type="number" id="resilience" name="resilience" min = "0" max = "10" class="sensitive">
                 </td>
             </tr>
             <tr>
                 <td colspan="3">
-                    <label for = "health">Health:</label> <input type="number" id="health" name="health" min = "0" max = "1000" value = "32"> <button type="button" id="damagebutton">Take Damage</button><br>
-                    <label for = "maxhealth">Max Health:</label> <input type="number" id="maxhealth" name="maxhealth" min = "0" max = "1000" value = "32">
+                    <label for = "health">Health:</label> <input type="number" id="health" name="health" min = "0" max = "1000" value = "32" class = "wide"> <button type="button" id="damagebutton">Take Damage</button><br>
+                    <label for = "maxhealth">Max Health:</label> <input type="number" id="maxhealth" name="maxhealth" min = "0" max = "1000" value = "32" class="sensitive wide">
                 </td>
                 <td colspan="2">
-                    <label for = "healingsurges">Healing Surges:</label> <input type="number" id="healingsurges" name="healingsurges" min = "0" max = "10" value = "8">
+                    <label for = "healingsurges">Healing Surges:</label> <input type="number" id="healingsurges" name="healingsurges" min = "0" max = "10" value = "8" class = "wide">
                     <button type="button" id="usehealingsurgebutton">Heal</button><br>
-                    <label for = "maxhealingsurges">Max Healing Surges:</label> <input type="number" id="maxhealingsurges" name="maxhealingsurges" min = "0" max = "10" value = "8">
+                    <label for = "maxhealingsurges">Max Healing Surges:</label> <input type="number" id="maxhealingsurges" name="maxhealingsurges" min = "0" max = "10" value = "8" class="sensitive wide">
                 </td>
             </tr>
             <tr>
-                <td>
-                    <p style="text-align: center;">Charisma</p>
-                    <p style="text-align: center;">1d<input type="number" id="charisma" name="charisma" min = "4" max = "12" step="2"></p>
+                <td style="text-align: center;">
+                    Charisma<br>
+                    1d<input type="number" id="charisma" name="charisma" min = "4" max = "12" step="2" class="sensitive wide">
                 </td>
-                <td>
-                    <p style="text-align: center;">Finesse</p>
-                    <p style="text-align: center;">1d<input type="number" id="finesse" name="finesse" min = "4" max = "12" step="2"></p>
+                <td style="text-align: center;">
+                    Finesse<br>
+                    1d<input type="number" id="finesse" name="finesse" min = "4" max = "12" step="2" class="sensitive wide">
                 </td>
-                <td>
-                    <p style="text-align: center;">Intellect</p>
-                    <p style="text-align: center;">1d<input type="number" id="intellect" name="intellect" min = "4" max = "12" step="2"></p>
+                <td style="text-align: center;">
+                    Intellect<br>
+                    1d<input type="number" id="intellect" name="intellect" min = "4" max = "12" step="2" class="sensitive wide">
                 </td>
-                <td>
-                    <p style="text-align: center;">Strength</p>
-                    <p style="text-align: center;">1d<input type="number" id="strength" name="strength" min = "4" max = "12" step="2"></p>
+                <td style="text-align: center;">
+                    Strength<br>
+                    1d<input type="number" id="strength" name="strength" min = "4" max = "12" step="2" class="sensitive wide">
                 </td>
-                <td>
-                    <p style="text-align: center;">Willpower</p>
-                    <p style="text-align: center;">1d<input type="number" id="willpower" name="willpower" min = "4" max = "12" step="2"></p>
+                <td style="text-align: center;">
+                    Willpower<br>
+                    1d<input type="number" id="willpower" name="willpower" min = "4" max = "12" step="2" class="sensitive wide">
                 </td>
             </tr>
         </table>
-        <input type = "checkbox" id = "awarenessprof" name = "awareness" class="skillbutton"> <input type = "number" id = "awarenessbonus" name="awarenessbonus" min = "0" max = "10" placeholder="0"> <label for = "awareness">Awareness (INT/WILL)</label><br>   
-        <input type = "checkbox" id = "climbingprof" name = "climbing" class="skillbutton"> <input type = "number" id = "climbingbonus" name="climbingbonus" min = "0" max = "10" placeholder="0"> <label for = "climbing">Climbing (FIN/STR)</label><br>
-        <input type = "checkbox" id = "enduranceprof" name = "endurance" class="skillbutton"> <input type = "number" id = "endurancebonus" name="endurancebonus" min = "0" max = "10" placeholder="0"> <label for = "endurance">Endurance (STR/WILL)</label><br>
-        <input type = "checkbox" id = "historyprof" name = "history" class="skillbutton"> <input type = "number" id = "historybonus" name="historybonus" min = "0" max = "10" placeholder="0"> <label for = "history">History (INT)</label><br>
-        <input type = "checkbox" id = "insightprof" name = "insight" class="skillbutton"> <input type = "number" id = "insightbonus" name="insightbonus" min = "0" max = "10" placeholder="0"> <label for = "insight">Insight (CHA/INT)</label><br>
-        <input type = "checkbox" id = "intimidationprof" name = "intimidation" class="skillbutton"> <input type = "number" id = "intimidationbonus" name="intimidationbonus" min = "0" max = "10" placeholder="0"> <label for = "intimidation">Intimidation (CHA/STR)</label><br>
-        <input type = "checkbox" id = "liftingprof" name = "lifting" class="skillbutton"> <input type = "number" id = "liftingbonus" name="liftingbonus" min = "0" max = "10" placeholder="0"> <label for = "lifting">Lifting (STR)</label><br>
-        <input type = "checkbox" id = "natureprof" name = "nature" class="skillbutton"> <input type = "number" id = "naturebonus" name="naturebonus" min = "0" max = "10" placeholder="0"> <label for = "nature">Nature (INT)</label><br>
-        <input type = "checkbox" id = "persuasionprof" name = "persuasion" class="skillbutton"> <input type = "number" id = "persuasionbonus" name="persuasionbonus" min = "0" max = "10" placeholder="0"> <label for = "persuasion">Persuasion (CHA/WILL)</label><br>
-        <input type = "checkbox" id = "stealthprof" name = "stealth" class="skillbutton"> <input type = "number" id = "stealthbonus" name="stealthbonus" min = "0" max = "10" placeholder="0"> <label for = "stealth">Stealth (FIN)</label><br>
-        <input type = "checkbox" id = "thieveryprof" name = "thievery" class="skillbutton"> <input type = "number" id = "thieverybonus" name="thieverybonus" min = "0" max = "10" placeholder="0"> <label for = "thievery">Thievery (FIN/INT)</label><br>
+        <input type = "checkbox" id = "awarenessprof" name = "awareness" class="skillbutton sensitive"> +<input type = "number" id = "awarenessbonus" name="awarenessbonus" min = "0" max = "10" value="0" class="sensitive"> <label for = "awareness">Awareness (INT/WILL)</label><br>   
+        <input type = "checkbox" id = "climbingprof" name = "climbing" class="skillbutton sensitive"> +<input type = "number" id = "climbingbonus" name="climbingbonus" min = "0" max = "10" value="0" class="sensitive"> <label for = "climbing">Climbing (FIN/STR)</label><br>
+        <input type = "checkbox" id = "enduranceprof" name = "endurance" class="skillbutton sensitive"> +<input type = "number" id = "endurancebonus" name="endurancebonus" min = "0" max = "10" value="0" class="sensitive"> <label for = "endurance">Endurance (STR/WILL)</label><br>
+        <input type = "checkbox" id = "historyprof" name = "history" class="skillbutton sensitive"> +<input type = "number" id = "historybonus" name="historybonus" min = "0" max = "10" value="0" class="sensitive"> <label for = "history">History (INT)</label><br>
+        <input type = "checkbox" id = "insightprof" name = "insight" class="skillbutton sensitive"> +<input type = "number" id = "insightbonus" name="insightbonus" min = "0" max = "10" value="0" class="sensitive"> <label for = "insight">Insight (CHA/INT)</label><br>
+        <input type = "checkbox" id = "intimidationprof" name = "intimidation" class="skillbutton sensitive"> +<input type = "number" id = "intimidationbonus" name="intimidationbonus" min = "0" max = "10" value="0" class="sensitive"> <label for = "intimidation">Intimidation (CHA/STR)</label><br>
+        <input type = "checkbox" id = "liftingprof" name = "lifting" class="skillbutton sensitive"> +<input type = "number" id = "liftingbonus" name="liftingbonus" min = "0" max = "10" value="0" class="sensitive"> <label for = "lifting">Lifting (STR)</label><br>
+        <input type = "checkbox" id = "natureprof" name = "nature" class="skillbutton sensitive"> +<input type = "number" id = "naturebonus" name="naturebonus" min = "0" max = "10" value="0" class="sensitive"> <label for = "nature">Nature (INT)</label><br>
+        <input type = "checkbox" id = "persuasionprof" name = "persuasion" class="skillbutton sensitive"> +<input type = "number" id = "persuasionbonus" name="persuasionbonus" min = "0" max = "10" value="0" class="sensitive"> <label for = "persuasion">Persuasion (CHA/WILL)</label><br>
+        <input type = "checkbox" id = "stealthprof" name = "stealth" class="skillbutton sensitive"> +<input type = "number" id = "stealthbonus" name="stealthbonus" min = "0" max = "10" value="0" class="sensitive"> <label for = "stealth">Stealth (FIN)</label><br>
+        <input type = "checkbox" id = "thieveryprof" name = "thievery" class="skillbutton sensitive"> +<input type = "number" id = "thieverybonus" name="thieverybonus" min = "0" max = "10" value="0" class="sensitive"> <label for = "thievery">Thievery (FIN/INT)</label><br>
         <br>
         <table id="fatigueTable">
             <tr>
                 <td colspan="6">
-                    <p>Power Score:<input type="number" id="powerscore" name="powerscore" min="1" max="6" value="1"></p>
+                    Power Score:<input type="number" id="powerscore" name="powerscore" min="1" max="6" value="1" class="sensitive">
                 </td>
             </tr>
             <tr>
                 <td id="fatigue-slot-1">
-                    <p><input type = "text" id = "state1dieinput" name="state1dieinput" readonly = "true" size="8"><br>
-                    d<input type="number" id="fatigue1die" name="fatigue1die" min = "4" max = "12" step="2"></p>
+                    <input type = "text" id = "state1dieinput" name="state1dieinput" size="8" disabled><br>
+                    d<input type="number" id="fatigue1die" name="fatigue1die" min = "4" max = "12" step="2" class = "wide" disabled>
                 </td>
                 <td id="fatigue-slot-2">
-                    <p><input type = "text" id = "state2dieinput" name="state2dieinput" readonly = "true" size="8"><br>
-                    d<input type="number" id="fatigue2die" name="fatigue2die" min = "4" max = "12" step="2"></p>
+                    <input type = "text" id = "state2dieinput" name="state2dieinput" size="8" disabled><br>
+                    d<input type="number" id="fatigue2die" name="fatigue2die" min = "4" max = "12" step="2" class = "wide" disabled>
                 </td>
                 <td id="fatigue-slot-3">
-                    <p><input type = "text" id = "state3dieinput" name="state3dieinput" readonly = "true" size="8"><br>
-                    d<input type="number" id="fatigue3die" name="fatigue3die" min = "4" max = "12" step="2"></p>
+                    <input type = "text" id = "state3dieinput" name="state3dieinput" size="8" disabled><br>
+                    d<input type="number" id="fatigue3die" name="fatigue3die" min = "4" max = "12" step="2" class = "wide" disabled>
                 </td>
                 <td id="fatigue-slot-4">    
-                    <p><input type = "text" id = "state4dieinput" name="state4dieinput" readonly = "true" size="8"><br>
-                    d<input type="number" id="fatigue4die" name="fatigue4die" min = "4" max = "12" step="2"></p>
+                    <input type = "text" id = "state4dieinput" name="state4dieinput" size="8" disabled><br>
+                    d<input type="number" id="fatigue4die" name="fatigue4die" min = "4" max = "12" step="2" class = "wide" disabled>
                 </td>
                 <td id="fatigue-slot-5">
-                    <p><input type = "text" id = "state5dieinput" name="state5dieinput" readonly = "true" size="8"><br>
-                    d<input type="number" id="fatigue5die" name="fatigue5die" min = "4" max = "12" step="2"></p>
+                    <input type = "text" id = "state5dieinput" name="state5dieinput" size="8" disabled><br>
+                    d<input type="number" id="fatigue5die" name="fatigue5die" min = "4" max = "12" step="2" class = "wide" disabled>
                 </td>
                 <td id="fatigue-slot-6">
-                    <p><input type = "text" id = "state6dieinput" name="state6dieinput" readonly = "true" size="8"><br>
-                    d<input type="number" id="fatigue6die" name="fatigue6die" min = "4" max = "12" step="2"></p>
+                    <input type = "text" id = "state6dieinput" name="state6dieinput" size="8" disabled><br>
+                    d<input type="number" id="fatigue6die" name="fatigue6die" min = "4" max = "12" step="2" class = "wide" disabled>
                 </td>
             </tr>
         </table>
@@ -146,8 +146,10 @@
         <textarea id="notes" name="notes" rows="15" cols="60" placeholder="Notes and Features"></textarea><br>
         <button id="savebutton" type="button">Save Sheet</button>
         <input type = "file" id = "loadsheet" name="loadsheet" accept=".json">
-        <button id="loadbutton" type="button">Load Sheet</button>
-        <button id="resetbutton" type="button">Clear Sheet</button>
+        <button id="loadbutton" type="button">Load Sheet</button><br>
+        <button id="resetbutton" type="button"><b>Clear Sheet</b></button>
+        <button id="enablesensitivebutton" type="button">Enable Sensitive Fields</button>
+        <button id="disablesensitivebutton" type="button">Disable Sensitive Fields</button>
         <div id = "resetmodal" class = "modal">
             <div class = "modalcontent" style = "text-align: center;">
                 <p>Are you sure you want to clear the sheet? This cannot be undone.</p>
