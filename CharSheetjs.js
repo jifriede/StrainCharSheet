@@ -157,6 +157,18 @@ document.getElementById('fatigueTable').addEventListener('click', function(event
     updateSelectedFatigueSlot(slotNumber);
 });
 
+document.querySelectorAll('.skillbutton').forEach((button) => {
+    button.addEventListener('click', function() {
+        const skillInput = this.nextElementSibling.nextElementSibling;
+        const currentValue = Number(skillInput.value || 0);
+        if (this.checked) {
+            skillInput.value = currentValue + 2;
+        } else {
+            skillInput.value = currentValue - 2;
+        }
+    });
+});
+
 document.getElementById('addDieButton').addEventListener('click', function() {
     applyActionToSelectedFatigueSlot('add');
 });
