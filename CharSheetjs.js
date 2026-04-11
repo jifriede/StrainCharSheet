@@ -241,16 +241,18 @@ function modifyDamageStep(action) {
     document.getElementById('modinput').value = damage.value;
 }
 
-
-document.getElementById('fatigueTable').addEventListener('click', function(event) {
-    const cell = event.target.closest('td[id^="fatigue-slot-"]');
-
-    if (!cell || cell.style.display === 'none') {
-        return;
-    }
-
-    const slotNumber = Number(cell.id.replace('fatigue-slot-', ''));
-    updateSelectedFatigueSlot(slotNumber);
+document.querySelectorAll('.fatigueselector').forEach((checkbox) => {
+    checkbox.addEventListener('change', function() {
+        if (this.checked) {
+            const slotNumber = Number(this.id.replace('selectfatigue', ''));
+            updateSelectedFatigueSlot(slotNumber);
+            for (let i = 1; i <= 6; i++) {
+                if (i !== slotNumber) {
+                    document.getElementById(`selectfatigue${i}`).checked = false;
+                }
+            }
+        }
+    });
 });
 
 document.querySelectorAll('.skillbutton').forEach((button) => {
