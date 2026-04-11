@@ -1,5 +1,5 @@
-var damageButton = document.getElementById("damagebutton");
-var closeDamageButton = document.querySelector(".closedamage");
+var modifyhealthButton = document.getElementById("modifyhealthbutton");
+var closehealmod = document.querySelector(".closehealthmod");
 var resetButton = document.getElementById("resetbutton");
 var confirmResetButton = document.getElementById("confirmresetbutton");
 var cancelResetButton = document.getElementById("cancelresetbutton");
@@ -34,31 +34,31 @@ confirmResetButton.onclick = function() {
     closeResetModal();
 }
 
-function openDamageModal() {
-    var modal = document.getElementById("damagemodal");
+function openHealthModModal() {
+    var modal = document.getElementById("healthmodmodal");
     if (modal) {
         modal.style.display = "block";
     }
 }
 
-function closeDamageModal() {
-    var modal = document.getElementById("damagemodal");
+function closeHealthModModal() {
+    var modal = document.getElementById("healthmodmodal");
     if (modal) {
         modal.style.display = "none";
     }
-    document.getElementById('damageinput').value = 0;
+    document.getElementById('modinput').value = 0;
 }
 
-damageButton.onclick = function() {
-    openDamageModal();
+modifyhealthButton.onclick = function() {
+    openHealthModModal();
 }
-closeDamageButton.onclick = function() {
-    closeDamageModal();
+closehealmod.onclick = function() {
+    closeHealthModModal();
 }
 window.onclick = function(event) {
-    var modal = document.getElementById("damagemodal");
+    var modal = document.getElementById("healthmodmodal");
     if (event.target == modal) {
-        closeDamageModal();
+        closeHealthModModal();
     }
 };
 
@@ -219,7 +219,7 @@ function applyActionToSelectedFatigueSlot(action) {
 }
 
 function modifyDamageStep(action) {
-    const damage = document.getElementById('damageinput') || { value: 0 };
+    const damage = document.getElementById('modinput') || { value: 0 };
     if (action === '-10damage') {
         damage.value = damage.value-10;
     }
@@ -238,7 +238,7 @@ function modifyDamageStep(action) {
     if (action === '+10damage') {
         damage.value = Number(damage.value)+10;
     }
-    document.getElementById('damageinput').value = damage.value;
+    document.getElementById('modinput').value = damage.value;
 }
 
 
@@ -275,11 +275,11 @@ const applyDamageButton = document.getElementById('applydamagebutton');
 if (applyDamageButton) {
     applyDamageButton.addEventListener('click', function() {
         const healthInput = document.getElementById('health');
-        const damageInput = document.getElementById('damageinput');
+        const modInput = document.getElementById('modinput');
         const maxHealthInput = document.getElementById('maxhealth');
-        const outputHealth = Math.max(Math.min(Number(healthInput.value) - Number(damageInput.value), Number(maxHealthInput.value)), 0);
+        const outputHealth = Math.max(Math.min(Number(healthInput.value) + Number(modInput.value), Number(maxHealthInput.value)), 0);
         document.getElementById('health').value = outputHealth;
-        closeDamageModal();
+        closeHealthModModal();
     });
 }
 
