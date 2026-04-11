@@ -308,6 +308,17 @@ document.getElementById('health').addEventListener('change', function() {
     }
 });
 
+document.getElementById('gainmilestonebutton').addEventListener('click', function() {
+    const currentMilestones = Number(document.getElementById('milestone').value) || 0;
+    if (currentMilestones >= 8) {
+        document.getElementById('xp').value = Number(document.getElementById('xp').value) + 1;
+        return;
+    }
+    document.getElementById('milestone').value = currentMilestones + 1;
+    const currentAttunement = Number(document.getElementById('attunement').value) || 0;
+    document.getElementById('attunement').value = currentAttunement + 1;
+});
+
 document.getElementById('fatigueButton').addEventListener('click', function() {
     applyActionToSelectedFatigueSlot('fatigue');
 });
