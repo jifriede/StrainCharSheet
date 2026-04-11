@@ -363,6 +363,24 @@ document.getElementById('disablesensitivebutton').addEventListener('click', func
     setDisableSensitive();
 });
 
+function scaleTextArea() {
+    const textarea = document.getElementById('notes');
+    const rightColumn = document.querySelector('.rightcolumn');
+    const footer = document.querySelector('footer');
+    const textareaTop = textarea.getBoundingClientRect().top;
+    const footerHeight = footer ? footer.getBoundingClientRect().height : 0;
+    const availableHeight = window.innerHeight - textareaTop - footerHeight;
+
+    const columnwidth = rightColumn.clientWidth;
+    textarea.style.width = `${columnwidth - 10}px`;
+    textarea.style.height = `${Math.max(availableHeight, 100)}px`;
+}
+
+document.getElementById('scaletextarea').addEventListener('click', function() {
+    scaleTextArea();
+});
+
 document.getElementById('powerscore').addEventListener('input', updateFatigueSlots);
 updateFatigueSlots();
 updateSelectedFatigueSlot(1);
+scaleTextArea();
