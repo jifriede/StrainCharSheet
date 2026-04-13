@@ -140,7 +140,8 @@
                     <button type="button" data-action="remove-die">Clear Die</button><br><br>
                     <button type="button" data-action="open-modal" data-modal="saveloadmodal">Save/Load/Clear Sheet</button>
                     <button type="button" data-action="open-modal" data-modal="settingsmodal">Settings</button>
-                    <button type="button" data-action="scale-textarea">Scale Text Area</button>
+                    <button type="button" data-action="scale-textarea">Scale Text Area</button><br>
+                    <span style="font-size: 0.75em;" id="stateofsheet"></span>, <span style="font-size: 0.75em;" id="fieldsensitivity"></span>
                     <div id="healthmodmodal" class="modal">
                         <div class = "modalcontent" style = "text-align: center;">
                             <p>Positive is healing, negative is damage</p>
@@ -174,7 +175,7 @@
                         <div class = "modalcontent" style = "text-align: center;">
                             <button type="button" data-action="enable-sensitive">Enable Sensitive Fields</button><br>
                             <button type="button" data-action="disable-sensitive">Disable Sensitive Fields</button><br>
-                            <input type="checkbox" id="savelocally"><label for="savelocally">Save Locally</label>
+                            <input type="checkbox" id="savelocally"><label for="savelocally">Save on browser</label>
                         </div>
                     </div>
                     <div id = "saveloadmodal" class = "modal">
@@ -190,6 +191,26 @@
                             <p>Are you sure you want to clear the sheet? This cannot be undone.</p>
                             <button type="button" data-action="confirm-reset">Yes</button>
                             <button type="button" data-action="cancel-reset">No</button>
+                        </div>
+                    </div>
+                    <div id = "characterselector" class = "modal">
+                        <div class = "modalcontent" style = "text-align: center;">
+                            <p>Select a character</p>
+                            <table id="charactertable">
+                                <thead>
+                                    <tr>
+                                        <th>Name</th>
+                                        <th>Level</th>
+                                        <th>Power Source</th>
+                                        <th>Role</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                </tbody>
+                            </table>
+                            <button type="button" data-action="load-char-selected">Load</button>
+                            <button type="button" data-action="delete-char-selected">Delete</button>
+                            <button type="button" data-action="close-modal" data-modal="characterselector">Close</button>
                         </div>
                     </div>
                 </div>

@@ -88,3 +88,22 @@ textarea {
 .open {
     display: block;
 }
+#charactertable {
+    width: 100%;
+    border-collapse: collapse;
+}
+#charactertable td, #charactertable th {
+    border: 1px solid rgb(0, 0, 0);
+    padding: 5px;
+}
+
+#charactertable tr:hover {
+    background-color: rgb(230, 230, 230);
+    cursor: pointer;
+}
+
+#charactertable tr.selected {
+    background-color: rgb(200,200,200);
+    border: 2px solid rgb(50, 50, 50);
+    cursor: pointer;
+}

@@ -1,6 +1,8 @@
 const STORAGE_KEY = 'straincharactersheet';
 const SETTINGS_KEY = 'straincharactersheetsettings';
 let sensitiveMode = false;
+let selectedCharacterID = null;
+
 
 document.body.addEventListener('click', function(event) {
     const button = event.target.closest('button');
@@ -9,6 +11,8 @@ document.body.addEventListener('click', function(event) {
         console.log('Sensitive button clicked, but action prevented.');
         return;
     }
+
+    updateStateOfLocal();
 
     const action = button.dataset.action;
     const modal = button.dataset.modal;
@@ -110,19 +114,32 @@ document.body.addEventListener('click', function(event) {
     } else if (action === "load-char") {
         const settings = getSettings();
         if (settings.saveLocally) {
-            const characters = loadLocalCharacters();
-            const names = Object.keys(characters);
-            if (names.length === 0) {
-                alert('No locally saved characters found.');
-                return;
-            }
-            const choice = prompt(`Enter the name of the character to load:\n${names.join('\n')}`);
-            if (!choice || !characters[choice]) return;
-            populateForm(characters[choice]);
+            populateCharacterTable();
+            ModalManager.open("characterselector");
         } else {
             promptForCharacterFile();
         }
         ModalManager.close("saveloadmodal");
+        return;
+    }
+
+    if (action === "load-char-selected") {
+        if (!selectedCharacterID) return;
+        const characters = loadLocalCharacters();
+        const data = characters[selectedCharacterID];
+        if (!data) return;
+        populateForm(data);
+        ModalManager.close("characterselector");
+        return;
+    } else if (action === "delete-char-selected") {
+        if (!selectedCharacterID) return;
+        if (!confirm('Delete this character?')) return;
+
+        const characters = loadLocalCharacters();
+        delete characters[selectedCharacterID];
+        saveLocalCharacters(characters);
+        selectedCharacterID = null;
+        populateCharacterTable();
         return;
     }
 
@@ -166,6 +183,8 @@ const ModalManager = {
     },
 
     close(id) {
+        updateStateOfLocal();
+        updateStateOfSensitive()
         const modal = this.modals[id];
         if (modal) modal.classList.remove('open');
         if (id === 'healthmodmodal') {
@@ -175,6 +194,8 @@ const ModalManager = {
             document.getElementById('spend1surges').checked = false;
             document.getElementById('spend2surges').checked = false;
             document.getElementById('recoverboundsustained').checked = false;
+        } else if (id === "characterselector") {
+            selectedCharacterID = null;
         }
     }
 }
@@ -217,6 +238,8 @@ window.onclick = function(event) {
         ModalManager.close("saveloadmodal");
     } else if (event.target == this.document.getElementById("settingsmodal")) {
         ModalManager.close("settingsmodal");
+    } else if (event.target == this.document.getElementById("characterselector")) {
+        ModalManager.close("characterselector");
     }
 };
 
@@ -227,18 +250,61 @@ addEventListener('keyup', function(event) {
         ModalManager.close("resetmodal");
         ModalManager.close("saveloadmodal");
         ModalManager.close("settingsmodal");
+        ModalManager.close("characterselector");
     }
 })
+
+function updateStateOfLocal(){
+    if (document.getElementById('savelocally').checked) {
+        document.getElementById('stateofsheet').textContent = 'Saving on browser';
+    } else {
+        document.getElementById('stateofsheet').textContent = 'Saving with file download';
+    }
+    setSaveLocally(document.getElementById('savelocally').checked);
+}
+
+function updateStateOfSensitive() {
+    if (sensitiveMode) {
+        document.getElementById('fieldsensitivity').textContent = 'sensitive fields enabled';
+    } else {
+        document.getElementById('fieldsensitivity').textContent = 'sensitive fields disabled';
+    }
+}
 
 function setDisableSensitive() {
     document.querySelectorAll('.sensitive').forEach((element) => {
         element.disabled = true;
     });
+    sensitiveMode = false;
+    updateStateOfSensitive();
 }
 
 function setEnableSensitive() {
     document.querySelectorAll('.sensitive').forEach((element) => {
         element.disabled = false;
+    });
+    sensitiveMode = true;
+    updateStateOfSensitive();
+}
+
+function populateCharacterTable() {
+    const tbody = document.querySelector('#charactertable tbody');
+    tbody.innerHTML = '';
+    const characters = loadLocalCharacters();
+    Object.entries(characters).forEach(([id, character]) => {
+        const row = document.createElement('tr');
+        row.innerHTML = `
+        <td>${character.name || 'Unnamed Character'}</td>
+        <td>${character.level || ''}</td>
+        <td>${character.powersource || ''}</td>
+        <td>${character.role || ''}</td>
+        `;
+        row.addEventListener('click', () => {
+            document.querySelectorAll('#charactertable tr').forEach(r => r.classList.remove('selected'));
+            row.classList.add('selected');
+            selectedCharacterID = id;
+        });
+        tbody.appendChild(row);
     });
 }
 
@@ -495,13 +561,6 @@ document.getElementById('health').addEventListener('change', function() {
     }
 });
 
-document.getElementById('savelocally').addEventListener('change', function() {
-    setSaveLocally(this.checked);
-});
-
-const settingsWhenLoading = getSettings();
-document.getElementById('savelocally').checked = settingsWhenLoading.saveLocally;
-
 function gainmilestone() {
     const currentMilestones = Number(document.getElementById('milestone').value) || 0;
     if (currentMilestones >= 8) {
@@ -527,6 +586,10 @@ function scaleTextArea() {
 }
 
 document.getElementById('powerscore').addEventListener('input', updateFatigueSlots);
+const settingsWhenLoading = getSettings();
+document.getElementById('savelocally').checked = settingsWhenLoading.saveLocally;
+updateStateOfLocal();
+updateStateOfSensitive()
 updateFatigueSlots();
 updateSelectedFatigueSlot(1);
 scaleTextArea();
