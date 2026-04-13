@@ -138,12 +138,8 @@
                     <button type="button" data-action="increase-size">Increase Size</button>
                     <button type="button" data-action="decrease-size">Decrease Size</button>
                     <button type="button" data-action="remove-die">Clear Die</button><br><br>
-                    <button type="button" data-action="save-char">Save Sheet</button>
-                    <input type = "file" id = "loadsheet" name="loadsheet" accept=".json">
-                    <button type="button" data-action="load-char">Load Sheet</button>
-                    <button type="button" data-action="open-modal" data-modal="resetmodal"><b>Clear Sheet</b></button><br>
-                    <button type="button" data-action="enable-sensitive">Enable Sensitive Fields</button>
-                    <button type="button" data-action="disable-sensitive">Disable Sensitive Fields</button>
+                    <button type="button" data-action="open-modal" data-modal="saveloadmodal">Save/Load/Clear Sheet</button>
+                    <button type="button" data-action="open-modal" data-modal="settingsmodal">Settings</button>
                     <button type="button" data-action="scale-textarea">Scale Text Area</button>
                     <div id="healthmodmodal" class="modal">
                         <div class = "modalcontent" style = "text-align: center;">
@@ -174,6 +170,21 @@
                             <button type="button" data-action="takeextendedrest" data-modal="restmodal">Take an extended rest</button>
                         </div>
                     </div> 
+                    <div id = "settingsmodal" class = "modal">
+                        <div class = "modalcontent" style = "text-align: center;">
+                            <button type="button" data-action="enable-sensitive">Enable Sensitive Fields</button>
+                            <button type="button" data-action="disable-sensitive">Disable Sensitive Fields</button>
+                        </div>
+                    </div>
+                    <div id = "saveloadmodal" class = "modal">
+                        <div class = "modalcontent" style = "text-align: center;">
+                            <p>Use the options below to save, load, or clear the sheet</p>
+                            <button type="button" data-action="save-char">Save Sheet</button><br>
+                            <input type = "file" id = "loadsheet" name="loadsheet" accept=".json"><br>
+                            <button type="button" data-action="load-char">Load Sheet</button><br>
+                            <button type="button" data-action="open-modal" data-modal="resetmodal"><b>Clear Sheet</b></button><br>
+                        </div>
+                    </div>
                     <div id = "resetmodal" class = "modal">
                         <div class = "modalcontent" style = "text-align: center;">
                             <p>Are you sure you want to clear the sheet? This cannot be undone.</p>

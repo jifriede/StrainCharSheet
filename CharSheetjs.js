@@ -22,9 +22,11 @@ document.body.addEventListener('click', function(event) {
         updateFatigueSlots();
         updateSelectedFatigueSlot(1);
         ModalManager.close("resetmodal");
+        ModalManager.close("saveloadmodal");
         return;
     } else if (action === "cancel-reset") {
         ModalManager.close("resetmodal");
+        ModalManager.close("saveloadmodal");
         return;
     }
 
@@ -95,20 +97,22 @@ document.body.addEventListener('click', function(event) {
     if (action === "save-char") {
         const characterData = collectCharacterData();
         saveCharacter(characterData, characterData.name || 'character');
+        ModalManager.close("saveloadmodal");
         return;
-    }
-
-    if (action === "load-char") {
+    } else if (action === "load-char") {
         const fileInput = document.getElementById('loadsheet');
         loadCharacter(fileInput.files[0]);
+        ModalManager.close("saveloadmodal");
         return;
     }
 
     if (action === "enable-sensitive") {
         setEnableSensitive();
+        ModalManager.close("settingsmodal");
         return;
     } else if (action === "disable-sensitive") {
         setDisableSensitive();
+        ModalManager.close("settingsmodal");
         return;
     }
 
@@ -178,6 +182,10 @@ window.onclick = function(event) {
         ModalManager.close("restmodal");
     } else if (event.target == this.document.getElementById("resetmodal")) {
         ModalManager.close("resetmodal");
+    } else if (event.target == this.document.getElementById("saveloadmodal")) {
+        ModalManager.close("saveloadmodal");
+    } else if (event.target == this.document.getElementById("settingsmodal")) {
+        ModalManager.close("settingsmodal");
     }
 };
 
@@ -186,6 +194,8 @@ addEventListener('keyup', function(event) {
         ModalManager.close("healthmodmodal");
         ModalManager.close("restmodal");
         ModalManager.close("resetmodal");
+        ModalManager.close("saveloadmodal");
+        ModalManager.close("settingsmodal");
     }
 })
 
