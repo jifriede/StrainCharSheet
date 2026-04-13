@@ -26,21 +26,6 @@
                         <option value="Striker">
                     </datalist>
                     <br><label for = "level">Level:</label> <input type="number" id="level" name="level" min = "1" max = "10" value = "1" class="sensitive"><br>
-                    <div id="healthmodmodal" class="modal">
-                        <div class = "modalcontent" style = "text-align: center;">
-                            <p>Positive is healing, negative is damage</p>
-                            <p>
-                            <button type="button" id="-10damage" class="damagestepbutton">-10</button>
-                            <button type="button" id="-5damage" class="damagestepbutton">-5</button>
-                            <button type="button" id="-1damage" class="damagestepbutton">-1</button>
-                            <input type="number" id="modinput" name="modinput" min="-100" max="100" value="0" class = "wide">
-                            <button type="button" id="+1damage" class="damagestepbutton">+1</button>
-                            <button type="button" id="+5damage" class="damagestepbutton">+5</button>
-                            <button type="button" id="+10damage" class="damagestepbutton">+10</button>
-                            </p>
-                            <button type="button" id="applydamagebutton">Apply</button>
-                        </div>
-                    </div>
                     <table>
                         <tr>
                             <td>
@@ -61,12 +46,15 @@
                         </tr>
                         <tr>
                             <td colspan="3">
-                                <label for = "health">Health:</label> <input type="number" id="health" name="health" min = "0" max = "1000" value = "32" class = "wide"> <button type="button" id="modifyhealthbutton">Change Health</button> <button type = "button" id="takerestbutton">Take Rest</button><br>
-                                <label for = "maxhealth">Max Health:</label> <input type="number" id="maxhealth" name="maxhealth" min = "0" max = "1000" value = "32" class="sensitive wide"> <button type="button" id="gainmilestonebutton">Gain Milestone</button>
+                                <label for = "health">Health:</label> <input type="number" id="health" name="health" min = "0" max = "1000" value = "32" class = "wide"> 
+                                <button type="button" data-action="open-modal" data-modal="healthmodmodal">Change Health</button> 
+                                <button type = "button" data-action="open-modal" data-modal="restmodal">Take Rest</button><br>
+                                <label for = "maxhealth">Max Health:</label> <input type="number" id="maxhealth" name="maxhealth" min = "0" max = "1000" value = "32" class="sensitive wide"> 
+                                <button type="button" data-action="gainmilestone">Gain Milestone</button>
                             </td>
                             <td colspan="2">
                                 <label for = "healingsurges">Healing Surges:</label> <input type="number" id="healingsurges" name="healingsurges" min = "0" max = "10" value = "8" class = "wide">
-                                <button type="button" id="usehealingsurgebutton">Heal</button><br>
+                                <button type="button" data-action="usehealingsurge">Heal</button><br>
                                 <label for = "maxhealingsurges">Max Healing Surges:</label> <input type="number" id="maxhealingsurges" name="maxhealingsurges" min = "0" max = "10" value = "8" class="sensitive wide">
                             </td>
                         </tr>
@@ -144,19 +132,34 @@
                             </td>
                         </tr>
                     </table>
-                    <button id = "fatigueButton" type="button">Fatigue</button>
-                    <button id = "bindButton" type="button">Bind</button>
-                    <button id = "sustainButton" type="button">Sustain</button>
-                    <button id = "increaseSizeButton" type="button">Increase Size</button>
-                    <button id = "decreaseSizeButton" type="button">Decrease Size</button>
-                    <button id = "removeDieButton" type="button">Clear Die</button><br><br>
-                    <button id="savebutton" type="button">Save Sheet</button>
+                    <button type="button" data-action="fatigue" >Fatigue</button>
+                    <button type="button" data-action="bind">Bind</button>
+                    <button type="button" data-action="sustain">Sustain</button>
+                    <button type="button" data-action="increase-size">Increase Size</button>
+                    <button type="button" data-action="decrease-size">Decrease Size</button>
+                    <button type="button" data-action="remove-die">Clear Die</button><br><br>
+                    <button type="button" data-action="save-char">Save Sheet</button>
                     <input type = "file" id = "loadsheet" name="loadsheet" accept=".json">
-                    <button id="loadbutton" type="button">Load Sheet</button>
-                    <button id="resetbutton" type="button"><b>Clear Sheet</b></button><br>
-                    <button id="enablesensitivebutton" type="button">Enable Sensitive Fields</button>
-                    <button id="disablesensitivebutton" type="button">Disable Sensitive Fields</button>
-                    <button id="scaletextarea" type="button">Scale Text Area</button>
+                    <button type="button" data-action="load-char">Load Sheet</button>
+                    <button type="button" data-action="open-modal" data-modal="resetmodal"><b>Clear Sheet</b></button><br>
+                    <button type="button" data-action="enable-sensitive">Enable Sensitive Fields</button>
+                    <button type="button" data-action="disable-sensitive">Disable Sensitive Fields</button>
+                    <button type="button" data-action="scale-textarea">Scale Text Area</button>
+                    <div id="healthmodmodal" class="modal">
+                        <div class = "modalcontent" style = "text-align: center;">
+                            <p>Positive is healing, negative is damage</p>
+                            <p>
+                            <button type="button" data-action="-10" class="damagestepbutton">-10</button>
+                            <button type="button" data-action="-5" class="damagestepbutton">-5</button>
+                            <button type="button" data-action="-1" class="damagestepbutton">-1</button>
+                            <input type="number" id="modinput" name="modinput" min="-100" max="100" value="0" class = "wide">
+                            <button type="button" data-action="1" class="damagestepbutton">+1</button>
+                            <button type="button" data-action="5" class="damagestepbutton">+5</button>
+                            <button type="button" data-action="10" class="damagestepbutton">+10</button>
+                            </p>
+                            <button type="button" data-action="close-modal" data-modal="healthmodmodal">Apply</button>
+                        </div>
+                    </div>
                     <div id = "restmodal" class = "modal">
                         <div class = "modalcontent" style="text-align: center;">
                             <p>Choose whether to take a tempo or extended rest.</p>
@@ -166,16 +169,16 @@
                             <input type="checkbox" id="spend1surges"> 1<br>
                             <input type="checkbox" id="spend2surges"> 2</p>
                             <input type="checkbox" id="recoverboundsustained"> Recover Bound/Sustained Powers<br>
-                            <button type="button" id="tempobutton">Take a tempo</button>
+                            <button type="button" data-action="taketempo" data-modal="restmodal">Take a tempo</button>
                             <hr>
-                            <button type="button" id="extendedrestbutton">Take an extended rest</button>
+                            <button type="button" data-action="takeextendedrest" data-modal="restmodal">Take an extended rest</button>
                         </div>
                     </div> 
                     <div id = "resetmodal" class = "modal">
                         <div class = "modalcontent" style = "text-align: center;">
                             <p>Are you sure you want to clear the sheet? This cannot be undone.</p>
-                            <button type="button" id="confirmresetbutton">Yes</button>
-                            <button type="button" id="cancelresetbutton">No</button>
+                            <button type="button" data-action="confirm-reset">Yes</button>
+                            <button type="button" data-action="cancel-reset">No</button>
                         </div>
                     </div>
                 </div>
