@@ -1,5 +1,4 @@
 var modifyhealthButton = document.getElementById("modifyhealthbutton");
-var closehealmod = document.querySelector(".closehealthmod");
 var resetButton = document.getElementById("resetbutton");
 var confirmResetButton = document.getElementById("confirmresetbutton");
 var cancelResetButton = document.getElementById("cancelresetbutton");
@@ -34,6 +33,82 @@ confirmResetButton.onclick = function() {
     closeResetModal();
 }
 
+function openRestModal() {
+    var modal = document.getElementById("restmodal");
+    if (modal) {
+        modal.style.display = "block";
+    }
+}
+
+function closeRestModal() {
+    var modal = document.getElementById("restmodal");
+    if (modal) {
+        modal.style.display = "none";
+    }
+}
+
+document.getElementById("takerestbutton").onclick = function() {
+    openRestModal();
+}
+
+document.getElementById('tempobutton').addEventListener('click', function() {
+    const healthInput = document.getElementById('health');
+    const healingSurgesInput = document.getElementById('healingsurges');
+    const maxhealthInput = document.getElementById('maxhealth');
+    const surgeValue = Math.floor(Number(maxhealthInput.value) / 2);
+    for (let surge = 0; surge <= 2; surge += 1) {
+        if (document.getElementById(`spend${surge}surges`).checked) {
+            surgesToSpend = surge;
+        }
+        document.getElementById(`spend${surge}surges`).checked = false;
+    }
+    var recoverBoundsSustained = document.getElementById('recoverboundsustained').checked;
+    document.getElementById('recoverboundsustained').checked = false;
+    if (surgesToSpend > 0 && Number(healingSurgesInput.value) >= surgesToSpend) {
+        const outputHealth = Math.min(Number(healthInput.value) + surgeValue * surgesToSpend, Number(maxhealthInput.value));
+        document.getElementById('health').value = outputHealth;
+        healingSurgesInput.value = Number(healingSurgesInput.value) - surgesToSpend;
+    }
+    if (recoverBoundsSustained) {
+        for (let slot = 1; slot <= 6; slot += 1) {
+            document.getElementById(`state${slot}dieinput`).value = '';
+            document.getElementById(`fatigue${slot}die`).value = '';
+        }
+    } else {
+        for (let slot = 1; slot <= 6; slot += 1) {
+            state = document.getElementById(`state${slot}dieinput`).value;
+            if (state === 'Fatigued') {
+                document.getElementById(`state${slot}dieinput`).value = '';
+                document.getElementById(`fatigue${slot}die`).value = '';
+            }
+        }
+    }
+    closeRestModal();
+});
+
+for (let surge = 0; surge <= 2; surge += 1) {
+    document.getElementById(`spend${surge}surges`).addEventListener('change', function() {
+        if (this.checked) {
+            for (let otherSurge = 0; otherSurge <= 2; otherSurge += 1) {
+                if (otherSurge !== surge) {
+                    document.getElementById(`spend${otherSurge}surges`).checked = false;
+                }
+            }
+        }
+    });
+}
+
+document.getElementById('extendedrestbutton').addEventListener('click', function() {
+    document.getElementById('health').value = document.getElementById('maxhealth').value;
+    document.getElementById('healingsurges').value = document.getElementById('maxhealingsurges').value;
+    closeRestModal();
+    for (let slot = 1; slot <= 6; slot += 1) {
+        document.getElementById(`state${slot}dieinput`).value = '';
+        document.getElementById(`fatigue${slot}die`).value = '';
+    }
+});
+
+
 function openHealthModModal() {
     var modal = document.getElementById("healthmodmodal");
     if (modal) {
@@ -52,15 +127,27 @@ function closeHealthModModal() {
 modifyhealthButton.onclick = function() {
     openHealthModModal();
 }
-closehealmod.onclick = function() {
-    closeHealthModModal();
-}
+
 window.onclick = function(event) {
     var modal = document.getElementById("healthmodmodal");
     if (event.target == modal) {
         closeHealthModModal();
     }
+    if (event.target == this.document.getElementById("restmodal")) {
+        closeRestModal();
+    }
+    if (event.target == this.document.getElementById("resetmodal")) {
+        closeResetModal();
+    }
 };
+
+addEventListener('keyup', function(event) {
+    if (event.key === 'Escape') {
+        closeHealthModModal();
+        closeRestModal();
+        closeResetModal();
+    }
+})
 
 function setDisableSensitive() {
     document.querySelectorAll('.sensitive').forEach((element) => {

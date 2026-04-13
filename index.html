@@ -28,7 +28,6 @@
                     <br><label for = "level">Level:</label> <input type="number" id="level" name="level" min = "1" max = "10" value = "1" class="sensitive"><br>
                     <div id="healthmodmodal" class="modal">
                         <div class = "modalcontent" style = "text-align: center;">
-                            <span class = "closehealthmod">&times;</span>
                             <p>Positive is healing, negative is damage</p>
                             <p>
                             <button type="button" id="-10damage" class="damagestepbutton">-10</button>
@@ -62,7 +61,7 @@
                         </tr>
                         <tr>
                             <td colspan="3">
-                                <label for = "health">Health:</label> <input type="number" id="health" name="health" min = "0" max = "1000" value = "32" class = "wide"> <button type="button" id="modifyhealthbutton">Change Health</button><br>
+                                <label for = "health">Health:</label> <input type="number" id="health" name="health" min = "0" max = "1000" value = "32" class = "wide"> <button type="button" id="modifyhealthbutton">Change Health</button> <button type = "button" id="takerestbutton">Take Rest</button><br>
                                 <label for = "maxhealth">Max Health:</label> <input type="number" id="maxhealth" name="maxhealth" min = "0" max = "1000" value = "32" class="sensitive wide"> <button type="button" id="gainmilestonebutton">Gain Milestone</button>
                             </td>
                             <td colspan="2">
@@ -94,17 +93,23 @@
                             </td>
                         </tr>
                     </table>
-                    <input type = "checkbox" id = "awarenessprof" name = "awareness" class="skillbutton sensitive"> +<input type = "number" id = "awarenessbonus" name="awarenessbonus" min = "0" max = "10" value="0" class="sensitive"> <label for = "awareness">Awareness (INT/WILL)</label><br>   
-                    <input type = "checkbox" id = "climbingprof" name = "climbing" class="skillbutton sensitive"> +<input type = "number" id = "climbingbonus" name="climbingbonus" min = "0" max = "10" value="0" class="sensitive"> <label for = "climbing">Climbing (FIN/STR)</label><br>
-                    <input type = "checkbox" id = "enduranceprof" name = "endurance" class="skillbutton sensitive"> +<input type = "number" id = "endurancebonus" name="endurancebonus" min = "0" max = "10" value="0" class="sensitive"> <label for = "endurance">Endurance (STR/WILL)</label><br>
-                    <input type = "checkbox" id = "historyprof" name = "history" class="skillbutton sensitive"> +<input type = "number" id = "historybonus" name="historybonus" min = "0" max = "10" value="0" class="sensitive"> <label for = "history">History (INT)</label><br>
-                    <input type = "checkbox" id = "insightprof" name = "insight" class="skillbutton sensitive"> +<input type = "number" id = "insightbonus" name="insightbonus" min = "0" max = "10" value="0" class="sensitive"> <label for = "insight">Insight (CHA/INT)</label><br>
-                    <input type = "checkbox" id = "intimidationprof" name = "intimidation" class="skillbutton sensitive"> +<input type = "number" id = "intimidationbonus" name="intimidationbonus" min = "0" max = "10" value="0" class="sensitive"> <label for = "intimidation">Intimidation (CHA/STR)</label><br>
-                    <input type = "checkbox" id = "liftingprof" name = "lifting" class="skillbutton sensitive"> +<input type = "number" id = "liftingbonus" name="liftingbonus" min = "0" max = "10" value="0" class="sensitive"> <label for = "lifting">Lifting (STR)</label><br>
-                    <input type = "checkbox" id = "natureprof" name = "nature" class="skillbutton sensitive"> +<input type = "number" id = "naturebonus" name="naturebonus" min = "0" max = "10" value="0" class="sensitive"> <label for = "nature">Nature (INT)</label><br>
-                    <input type = "checkbox" id = "persuasionprof" name = "persuasion" class="skillbutton sensitive"> +<input type = "number" id = "persuasionbonus" name="persuasionbonus" min = "0" max = "10" value="0" class="sensitive"> <label for = "persuasion">Persuasion (CHA/WILL)</label><br>
-                    <input type = "checkbox" id = "stealthprof" name = "stealth" class="skillbutton sensitive"> +<input type = "number" id = "stealthbonus" name="stealthbonus" min = "0" max = "10" value="0" class="sensitive"> <label for = "stealth">Stealth (FIN)</label><br>
-                    <input type = "checkbox" id = "thieveryprof" name = "thievery" class="skillbutton sensitive"> +<input type = "number" id = "thieverybonus" name="thieverybonus" min = "0" max = "10" value="0" class="sensitive"> <label for = "thievery">Thievery (FIN/INT)</label><br>
+                    <div style="display: flex;">
+                        <div style="float: left; width: 50%;">
+                            <input type = "checkbox" id = "awarenessprof" name = "awareness" class="skillbutton sensitive"> +<input type = "number" id = "awarenessbonus" name="awarenessbonus" min = "0" max = "10" value="0" class="sensitive"> <label for = "awareness">Awareness (INT/WILL)</label><br>   
+                            <input type = "checkbox" id = "climbingprof" name = "climbing" class="skillbutton sensitive"> +<input type = "number" id = "climbingbonus" name="climbingbonus" min = "0" max = "10" value="0" class="sensitive"> <label for = "climbing">Climbing (FIN/STR)</label><br>
+                            <input type = "checkbox" id = "enduranceprof" name = "endurance" class="skillbutton sensitive"> +<input type = "number" id = "endurancebonus" name="endurancebonus" min = "0" max = "10" value="0" class="sensitive"> <label for = "endurance">Endurance (STR/WILL)</label><br>
+                            <input type = "checkbox" id = "historyprof" name = "history" class="skillbutton sensitive"> +<input type = "number" id = "historybonus" name="historybonus" min = "0" max = "10" value="0" class="sensitive"> <label for = "history">History (INT)</label><br>
+                            <input type = "checkbox" id = "insightprof" name = "insight" class="skillbutton sensitive"> +<input type = "number" id = "insightbonus" name="insightbonus" min = "0" max = "10" value="0" class="sensitive"> <label for = "insight">Insight (CHA/INT)</label><br>
+                        </div>
+                        <div style="float: left; width: 50%;">
+                            <input type = "checkbox" id = "intimidationprof" name = "intimidation" class="skillbutton sensitive"> +<input type = "number" id = "intimidationbonus" name="intimidationbonus" min = "0" max = "10" value="0" class="sensitive"> <label for = "intimidation">Intimidation (CHA/STR)</label><br>
+                            <input type = "checkbox" id = "liftingprof" name = "lifting" class="skillbutton sensitive"> +<input type = "number" id = "liftingbonus" name="liftingbonus" min = "0" max = "10" value="0" class="sensitive"> <label for = "lifting">Lifting (STR)</label><br>
+                            <input type = "checkbox" id = "natureprof" name = "nature" class="skillbutton sensitive"> +<input type = "number" id = "naturebonus" name="naturebonus" min = "0" max = "10" value="0" class="sensitive"> <label for = "nature">Nature (INT)</label><br>
+                            <input type = "checkbox" id = "persuasionprof" name = "persuasion" class="skillbutton sensitive"> +<input type = "number" id = "persuasionbonus" name="persuasionbonus" min = "0" max = "10" value="0" class="sensitive"> <label for = "persuasion">Persuasion (CHA/WILL)</label><br>
+                            <input type = "checkbox" id = "stealthprof" name = "stealth" class="skillbutton sensitive"> +<input type = "number" id = "stealthbonus" name="stealthbonus" min = "0" max = "10" value="0" class="sensitive"> <label for = "stealth">Stealth (FIN)</label><br>
+                            <input type = "checkbox" id = "thieveryprof" name = "thievery" class="skillbutton sensitive"> +<input type = "number" id = "thieverybonus" name="thieverybonus" min = "0" max = "10" value="0" class="sensitive"> <label for = "thievery">Thievery (FIN/INT)</label><br>
+                        </div>
+                    </div>
                     <br>
                     <table id="fatigueTable">
                         <tr>
@@ -115,7 +120,7 @@
                         <tr>
                             <td id="fatigue-slot-1">
                                 <input type = "text" id = "state1dieinput" name="state1dieinput" size="8" disabled><br>
-                                d<input type="number" id="fatigue1die" name="fatigue1die" min = "4" max = "12" step="2" class = "wide" disabled> <input type="checkbox" id="selectfatigue1" name="selectfatigue1" class="fatigueselector">
+                                d<input type="number" id="fatigue1die" name="fatigue1die" min = "4" max = "12" step="2" class = "wide" disabled> <input type="checkbox" id="selectfatigue1" name="selectfatigue1" class="fatigueselector" checked>
                             </td>
                             <td id="fatigue-slot-2">
                                 <input type = "text" id = "state2dieinput" name="state2dieinput" size="8" disabled><br>
@@ -152,6 +157,20 @@
                     <button id="enablesensitivebutton" type="button">Enable Sensitive Fields</button>
                     <button id="disablesensitivebutton" type="button">Disable Sensitive Fields</button>
                     <button id="scaletextarea" type="button">Scale Text Area</button>
+                    <div id = "restmodal" class = "modal">
+                        <div class = "modalcontent" style="text-align: center;">
+                            <p>Choose whether to take a tempo or extended rest.</p>
+                            <hr>
+                            <p>Choose to spend healing surges</p>
+                            <p><input type="checkbox" id="spend0surges"> 0<br>
+                            <input type="checkbox" id="spend1surges"> 1<br>
+                            <input type="checkbox" id="spend2surges"> 2</p>
+                            <input type="checkbox" id="recoverboundsustained"> Recover Bound/Sustained Powers<br>
+                            <button type="button" id="tempobutton">Take a tempo</button>
+                            <hr>
+                            <button type="button" id="extendedrestbutton">Take an extended rest</button>
+                        </div>
+                    </div> 
                     <div id = "resetmodal" class = "modal">
                         <div class = "modalcontent" style = "text-align: center;">
                             <p>Are you sure you want to clear the sheet? This cannot be undone.</p>
