@@ -1,3 +1,5 @@
+const STORAGE_KEY = 'straincharactersheet';
+const SETTINGS_KEY = 'straincharactersheetsettings';
 let sensitiveMode = false;
 
 document.body.addEventListener('click', function(event) {
@@ -96,12 +98,30 @@ document.body.addEventListener('click', function(event) {
 
     if (action === "save-char") {
         const characterData = collectCharacterData();
-        saveCharacter(characterData, characterData.name || 'character');
+        const name = characterData.name || 'character';
+        const settings = getSettings();
+        if (settings.saveLocally) {
+            SaveCharacterLocal(characterData, name);
+        } else {
+            saveCharacter(characterData, name);
+        }
         ModalManager.close("saveloadmodal");
         return;
     } else if (action === "load-char") {
-        const fileInput = document.getElementById('loadsheet');
-        loadCharacter(fileInput.files[0]);
+        const settings = getSettings();
+        if (settings.saveLocally) {
+            const characters = loadLocalCharacters();
+            const names = Object.keys(characters);
+            if (names.length === 0) {
+                alert('No locally saved characters found.');
+                return;
+            }
+            const choice = prompt(`Enter the name of the character to load:\n${names.join('\n')}`);
+            if (!choice || !characters[choice]) return;
+            populateForm(characters[choice]);
+        } else {
+            promptForCharacterFile();
+        }
         ModalManager.close("saveloadmodal");
         return;
     }
@@ -162,6 +182,17 @@ const ModalManager = {
 document.addEventListener('DOMContentLoaded', () => {
     ModalManager.init();
 });
+
+function getSettings(){
+    const data = localStorage.getItem(SETTINGS_KEY);
+    return data ? JSON.parse(data) : { saveLocally: false };
+}
+
+function setSaveLocally(value) {
+    const settings = getSettings();
+    settings.saveLocally = value;
+    localStorage.setItem(SETTINGS_KEY, JSON.stringify(settings));
+}
 
 for (let surge = 0; surge <= 2; surge += 1) {
     document.getElementById(`spend${surge}surges`).addEventListener('change', function() {
@@ -230,6 +261,22 @@ function collectCharacterData() {
     return data;
 }
 
+function loadLocalCharacters() {
+    const data = localStorage.getItem(STORAGE_KEY);
+    return data ? JSON.parse(data) : {};
+}
+
+function saveLocalCharacters(characters){
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(characters));
+}
+
+function SaveCharacterLocal(data, name) {
+    const characters = loadLocalCharacters();
+    const id = name || `character_${Date.now()}`;
+    characters[id] = data;
+    saveLocalCharacters(characters);
+}
+
 function saveCharacter(data, name) {
     const json = JSON.stringify(data, null, 2);
     const blob = new Blob([json], { type: 'application/json' });
@@ -243,29 +290,60 @@ function saveCharacter(data, name) {
     URL.revokeObjectURL(url);
 }
 
+function populateForm(data) {
+    const fields = document.querySelectorAll('#characterSheetForm input, #characterSheetForm select, #characterSheetForm textarea');
+    fields.forEach((field) => {
+        if (!field.name) return;
+        if (field.type === 'file') return;
+        if (data[field.name] === undefined) return;
+
+        if (field.type === 'checkbox') {
+            field.checked = data[field.name];
+        } else if (field.type === 'number') {
+            field.value = data[field.name] === '' ? '' : Number(data[field.name]);
+        } else {
+            field.value = data[field.name];
+        }
+    });
+
+    updateFatigueSlots();
+}
+
 function loadCharacter(file) {
+    if (!file) {
+        return;
+    }
+
     const reader = new FileReader();
 
     reader.onload = function(event) {
         const data = JSON.parse(event.target.result);
-        console.log(data);
-        const fields = document.querySelectorAll('#characterSheetForm input, #characterSheetForm select, #characterSheetForm textarea');
-        fields.forEach((field) => {
-            if (!field.name) return;
-            if (field.type === 'file') return;
-            if (data[field.name] === undefined) return;
-            if (field.type === 'checkbox') {
-                field.checked = data[field.name];
-            } else if (field.type === 'number') {
-                field.value = data[field.name] === '' ? '' : Number(data[field.name]);
-            } else {
-                field.value = data[field.name];
-            }
-        });
-        updateFatigueSlots();
+        populateForm(data);
     };
     setDisableSensitive();
     reader.readAsText(file);
+}
+
+function promptForCharacterFile() {
+    const fileInput = document.createElement('input');
+    fileInput.type = 'file';
+    fileInput.accept = '.json,application/json';
+    fileInput.style.display = 'none';
+
+    fileInput.addEventListener('change', function() {
+        const selectedFile = this.files && this.files[0];
+        if (!selectedFile) {
+            fileInput.remove();
+            return;
+        }
+
+        loadCharacter(selectedFile);
+        ModalManager.close('saveloadmodal');
+        fileInput.remove();
+    }, { once: true });
+
+    document.body.appendChild(fileInput);
+    fileInput.click();
 }
 
 let selectedFatigueSlot = 1;
@@ -416,6 +494,13 @@ document.getElementById('health').addEventListener('change', function() {
         this.value = 0;
     }
 });
+
+document.getElementById('savelocally').addEventListener('change', function() {
+    setSaveLocally(this.checked);
+});
+
+const settingsWhenLoading = getSettings();
+document.getElementById('savelocally').checked = settingsWhenLoading.saveLocally;
 
 function gainmilestone() {
     const currentMilestones = Number(document.getElementById('milestone').value) || 0;

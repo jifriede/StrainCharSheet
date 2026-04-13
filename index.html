@@ -172,15 +172,15 @@
                     </div> 
                     <div id = "settingsmodal" class = "modal">
                         <div class = "modalcontent" style = "text-align: center;">
-                            <button type="button" data-action="enable-sensitive">Enable Sensitive Fields</button>
-                            <button type="button" data-action="disable-sensitive">Disable Sensitive Fields</button>
+                            <button type="button" data-action="enable-sensitive">Enable Sensitive Fields</button><br>
+                            <button type="button" data-action="disable-sensitive">Disable Sensitive Fields</button><br>
+                            <input type="checkbox" id="savelocally"><label for="savelocally">Save Locally</label>
                         </div>
                     </div>
                     <div id = "saveloadmodal" class = "modal">
                         <div class = "modalcontent" style = "text-align: center;">
                             <p>Use the options below to save, load, or clear the sheet</p>
                             <button type="button" data-action="save-char">Save Sheet</button><br>
-                            <input type = "file" id = "loadsheet" name="loadsheet" accept=".json"><br>
                             <button type="button" data-action="load-char">Load Sheet</button><br>
                             <button type="button" data-action="open-modal" data-modal="resetmodal"><b>Clear Sheet</b></button><br>
                         </div>
