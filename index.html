@@ -9,23 +9,30 @@
         <form id="characterSheetForm">
             <div class = "row">
                 <div class = "leftcolumn">
-                    <label for = "name">Name:</label> <input type="text" id = "name" name="name" class="sensitive"><br>
-                    <label for = "powersourceinput">Power Source:</label> <input list="powersource" id="powersourceinput" name="powersourceinput" class="sensitive">
-                    <datalist id="powersource">
-                        <option value="Arcane">
-                        <option value="Elemental">
-                        <option value="Guile">
-                        <option value="Occult">
-                        <option value="Psionic">
-                        <option value="Valour">
-                    </datalist>
-                    <br><label for = "roleinput">Role:</label> <input list="role" id="roleinput" name="roleinput" class="sensitive">
-                    <datalist id="role">
-                        <option value="Defender">
-                        <option value="Leader">
-                        <option value="Striker">
-                    </datalist>
-                    <br><label for = "level">Level:</label> <input type="number" id="level" name="level" min = "1" max = "10" value = "1" class="sensitive"><br>
+                    <div style="display: flex;">
+                        <div style="float: left; width: 60%;">
+                            <label for = "name">Name:</label> <input type="text" id = "name" name="name" class="sensitive"><br>
+                            <label for = "powersourceinput">Power Source:</label> <input list="powersource" id="powersourceinput" name="powersourceinput" class="sensitive">
+                            <datalist id="powersource">
+                                <option value="Arcane">
+                                <option value="Elemental">
+                                <option value="Guile">
+                                <option value="Occult">
+                                <option value="Psionic">
+                                <option value="Valour">
+                            </datalist>
+                            <br><label for = "roleinput">Role:</label> <input list="role" id="roleinput" name="roleinput" class="sensitive">
+                            <datalist id="role">
+                                <option value="Defender">
+                                <option value="Leader">
+                                <option value="Striker">
+                            </datalist>
+                            <br><label for = "level">Level:</label> <input type="number" id="level" name="level" min = "1" max = "10" value = "1" class="sensitive"><br>
+                        </div>
+                        <div style="float: left; width: 40%; padding: 10px;">
+                            <button type="button" data-action="open-modal" data-modal="dice-roller" style="width: 100%; height: 100%;">Roll Dice</button>
+                        </div>
+                    </div>
                     <table>
                         <tr>
                             <td>
@@ -211,6 +218,84 @@
                             <button type="button" data-action="load-char-selected">Load</button>
                             <button type="button" data-action="delete-char-selected">Delete</button>
                             <button type="button" data-action="close-modal" data-modal="characterselector">Close</button>
+                        </div>
+                    </div>
+                    <div id="dice-roller" class="modal">
+                        <div class = "modalcontent" style="text-align: center;">
+                            <p>Make a check</p>
+                            <table style="margin: auto;">
+                                <tr>
+                                    <td style="padding: 5px;">Dis4</td>
+                                    <td style="padding: 5px;">Dis3</td>
+                                    <td style="padding: 5px;">Dis2</td>
+                                    <td style="padding: 5px;">Dis1</td>
+                                    <td style="padding: 5px;">Base</td>
+                                    <td style="padding: 5px;">Adv1</td>
+                                    <td style="padding: 5px;">Adv2</td>
+                                    <td style="padding: 5px;">Adv3</td>
+                                    <td style="padding: 5px;">Adv4</td>
+                                </tr>
+                                <tr>
+                                    <td><input type="radio" id="dis4" name="checkdisad"></td>
+                                    <td><input type="radio" id="dis3" name="checkdisad"></td>
+                                    <td><input type="radio" id="dis2" name="checkdisad"></td>
+                                    <td><input type="radio" id="dis1" name="checkdisad"></td>
+                                    <td><input type="radio" id="base" name="checkdisad" checked></td>
+                                    <td><input type="radio" id="adv1" name="checkdisad"></td>
+                                    <td><input type="radio" id="adv2" name="checkdisad"></td>
+                                    <td><input type="radio" id="adv3" name="checkdisad"></td>
+                                    <td><input type="radio" id="adv4" name="checkdisad"></td>
+                                </tr>
+                            </table>
+                            <button type="button" data-action="rollcheck" data-diesize="4">Roll d4</button>
+                            <button type="button" data-action="rollcheck" data-diesize="6">Roll d6</button>
+                            <button type="button" data-action="rollcheck" data-diesize="8">Roll d8</button>
+                            <button type="button" data-action="rollcheck" data-diesize="10">Roll d10</button>
+                            <button type="button" data-action="rollcheck" data-diesize="12">Roll d12</button>
+                            <hr>
+                            <p>Make an attack</p>
+                            <table style="margin: auto;">
+                                <tr>
+                                    <td style="padding: 5px; vertical-align: top;">
+                                        Dice Number<br>
+                                        1<input type="radio" id="dnum1" name="dicenum" checked><br>
+                                        2<input type="radio" id="dnum2" name="dicenum"><br>
+                                        3<input type="radio" id="dnum3" name="dicenum"><br>
+                                        4<input type="radio" id="dnum4" name="dicenum"><br>
+                                        5<input type="radio" id="dnum5" name="dicenum">
+                                    </td>
+                                    <td style="padding: 5px; vertical-align: top;">
+                                        Dice Size<br>
+                                        d4<input type="radio" id="dsize4" name="dicesize" checked><br>
+                                        d6<input type="radio" id="dsize6" name="dicesize"><br>
+                                        d8<input type="radio" id="dsize8" name="dicesize"><br>
+                                        d10<input type="radio" id="dsize10" name="dicesize"><br>
+                                        d12<input type="radio" id="dsize12" name="dicesize">
+                                    </td>
+                                    <td style="padding: 5px; vertical-align: top;">
+                                        Evasion<br>
+                                        0<input type="radio" id="attackevasion0" name="checkevasion" checked><br>
+                                        1<input type="radio" id="attackevasion1" name="checkevasion"><br>
+                                        2<input type="radio" id="attackevasion2" name="checkevasion"><br>
+                                        3<input type="radio" id="attackevasion3" name="checkevasion"><br>
+                                        4<input type="radio" id="attackevasion4" name="checkevasion"><br>
+                                        5<input type="radio" id="attackevasion5" name="checkevasion"><br>
+                                    </td>
+                                    <td style="padding: 5px; vertical-align: top;">
+                                        Resilience<br>
+                                        0<input type="radio" id="checkresilience0" name="checkresilience" checked><br>
+                                        1<input type="radio" id="checkresilience1" name="checkresilience"><br>
+                                        2<input type="radio" id="checkresilience2" name="checkresilience"><br>
+                                        3<input type="radio" id="checkresilience3" name="checkresilience"><br>
+                                        4<input type="radio" id="checkresilience4" name="checkresilience"><br>
+                                        5<input type="radio" id="checkresilience5" name="checkresilience">
+                                    </td>
+                                </tr>
+                            </table><br>
+                            <button type="button" data-action="roll-attack">Roll Attack</button><br>
+                            <hr>
+                            <p><span id="diceresult"></span></p>
+                            <button type="button" data-action="close-modal" data-modal="dice-roller">Close</button>
                         </div>
                     </div>
                 </div>

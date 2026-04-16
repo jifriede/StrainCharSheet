@@ -2,17 +2,15 @@ const STORAGE_KEY = 'straincharactersheet';
 const SETTINGS_KEY = 'straincharactersheetsettings';
 let sensitiveMode = false;
 let selectedCharacterID = null;
+let saveLocal = false;
 
 
 document.body.addEventListener('click', function(event) {
     const button = event.target.closest('button');
     if (!button) return;
     if (sensitiveMode && button.classList.contains('sensitive')) {
-        console.log('Sensitive button clicked, but action prevented.');
         return;
     }
-
-    updateStateOfLocal();
 
     const action = button.dataset.action;
     const modal = button.dataset.modal;
@@ -29,6 +27,8 @@ document.body.addEventListener('click', function(event) {
         updateSelectedFatigueSlot(1);
         ModalManager.close("resetmodal");
         ModalManager.close("saveloadmodal");
+        document.getElementById('diceresult').textContent = '';
+        document.getElementById('savelocally').checked = saveLocal;
         return;
     } else if (action === "cancel-reset") {
         ModalManager.close("resetmodal");
@@ -79,6 +79,68 @@ document.body.addEventListener('click', function(event) {
         return;
     }
 
+    if (action === "rollcheck") {
+        const dieSize = button.dataset.diesize;
+        let advval = 0;
+        for (let disadindex = 0; disadindex < 9; disadindex += 1) {
+            if (document.getElementsByName('checkdisad')[disadindex].checked) {
+                advval = disadindex-4;
+            }
+        }
+        let dice = [];
+        if (dieSize === "12") {
+            dice = rollDie(2, 12, advval);
+        } else {
+            const firstdie = rollDie(1, Number(dieSize), 0);
+            const seconddice = rollDie(1, 12, advval);
+            dice = firstdie.concat(seconddice);
+        }
+        let removedDice = [];
+        let keptDice = [];
+        if (advval !== 0) {
+            keptDice = dice.slice(0, 2);
+            removedDice = dice.slice(2);
+            document.getElementById('diceresult').innerHTML = `<b>${keptDice[0] + keptDice[1]}</b> [${keptDice.join(', ')}] <i>(removed: ${removedDice.join(', ')})</i>`;
+        } else {
+            keptDice = dice;
+            document.getElementById('diceresult').innerHTML = `<b>${keptDice[0] + keptDice[1]}</b> [${keptDice.join(', ')}]`;
+        }
+        
+    } else if (action === "roll-attack") {
+        let dnum = 1;
+        let dsize = 4;
+        let evasion = 0;
+        let resilience = 0;
+        for (let i = 0; i < 6; i += 1) {
+            if (i<5) {
+                if (document.getElementsByName('dicenum')[i].checked) {
+                    dnum = i+1;
+                }
+                if (document.getElementsByName('dicesize')[i].checked) {
+                    dsize = [4, 6, 8, 10, 12][i];
+                }
+            }  
+            if (document.getElementsByName('checkevasion')[i].checked) {
+                evasion = i;
+            }
+            if (document.getElementsByName('checkresilience')[i].checked) {
+                resilience = i;
+            }
+        }
+        let dice = rollDie(dnum, dsize, resilience);
+        const evasiondice = new Set(rollDie(evasion, dsize, 0));
+
+        // remove any and all damage dice in dice that match one or more evasoindice
+        let result = dice.filter(die => !evasiondice.has(die));
+        let evremoved = dice.filter(die => evasiondice.has(die));
+        result.sort(function(a, b){return a-b});
+        let damagedice = result.slice(0,-resilience);
+        let resremoved = result.slice(-resilience);
+        let damage = damagedice.reduce((a, b) => a + b, 0);
+        //document.getElementById('diceresult').innerHTML = `Damage: ${damage} (${damagedice.join(', ')}) <i>(evade removed: ${evremoved.join(', ')}, resilience removed: ${resremoved.join(', ')})</i>`;
+        document.getElementById('diceresult').innerHTML = `Damage: <b>${damage}</b> ${(damage > 0 ? `[${damagedice.join(', ')}]` : '')} <i>${(evremoved.length > 0 ? `(Evasion removed: [${evremoved.join(', ')}])` : '')} ${resremoved.length > 0 ? ` (Resilience removed: [${resremoved.join(', ')}])` : ''}</i>`;
+    }
+
     if (action === "usehealingsurge") {
         usehealingsurge();
         return;
@@ -96,15 +158,13 @@ document.body.addEventListener('click', function(event) {
 
     if (["fatigue", "bind", "sustain", "increase-size", "decrease-size", "remove-die"].includes(action)) {
         applyActionToSelectedFatigueSlot(action);
-        console.log(`Applied action ${action} to selected fatigue slot.`);
         return;
     }
 
     if (action === "save-char") {
         const characterData = collectCharacterData();
         const name = characterData.name || 'character';
-        const settings = getSettings();
-        if (settings.saveLocally) {
+        if (saveLocal) {
             SaveCharacterLocal(characterData, name);
         } else {
             saveCharacter(characterData, name);
@@ -112,8 +172,7 @@ document.body.addEventListener('click', function(event) {
         ModalManager.close("saveloadmodal");
         return;
     } else if (action === "load-char") {
-        const settings = getSettings();
-        if (settings.saveLocally) {
+        if (saveLocal) {
             populateCharacterTable();
             ModalManager.open("characterselector");
         } else {
@@ -196,6 +255,8 @@ const ModalManager = {
             document.getElementById('recoverboundsustained').checked = false;
         } else if (id === "characterselector") {
             selectedCharacterID = null;
+        } else if (id === "dice-roller") {
+            document.getElementById('diceresult').textContent = '';
         }
     }
 }
@@ -240,6 +301,8 @@ window.onclick = function(event) {
         ModalManager.close("settingsmodal");
     } else if (event.target == this.document.getElementById("characterselector")) {
         ModalManager.close("characterselector");
+    } else if (event.target == this.document.getElementById("dice-roller")) {
+        ModalManager.close("dice-roller");
     }
 };
 
@@ -251,16 +314,16 @@ addEventListener('keyup', function(event) {
         ModalManager.close("saveloadmodal");
         ModalManager.close("settingsmodal");
         ModalManager.close("characterselector");
+        ModalManager.close("dice-roller");
     }
 })
 
 function updateStateOfLocal(){
-    if (document.getElementById('savelocally').checked) {
+    if (saveLocal) {
         document.getElementById('stateofsheet').textContent = 'Saving on browser';
     } else {
         document.getElementById('stateofsheet').textContent = 'Saving with file download';
     }
-    setSaveLocally(document.getElementById('savelocally').checked);
 }
 
 function updateStateOfSensitive() {
@@ -585,9 +648,33 @@ function scaleTextArea() {
     textarea.style.height = `${Math.max(availableHeight, 100)}px`;
 }
 
+document.getElementById('savelocally').addEventListener('change', function() {
+    saveLocal = this.checked;
+    setSaveLocally(saveLocal);
+    updateStateOfLocal();
+});
+
+function randInt(min, max) { //inclusive min and inclusive max
+    return Math.floor(Math.random() * (max - min + 1) ) + min;
+}
+
+function rollDie(num, sides, advval) {
+    let dice = [];
+    for (let i = 0; i < num+Math.abs(advval); i += 1) {
+        dice.push(randInt(1, sides));
+    }
+    if (advval > 0) {
+        dice.sort(function(a, b){return b-a});
+    } else if (advval < 0) {
+        dice.sort(function(a, b){return a-b});
+    }
+    return dice;
+}
+
 document.getElementById('powerscore').addEventListener('input', updateFatigueSlots);
 const settingsWhenLoading = getSettings();
-document.getElementById('savelocally').checked = settingsWhenLoading.saveLocally;
+saveLocal = settingsWhenLoading.saveLocally;
+document.getElementById('savelocally').checked = saveLocal;
 updateStateOfLocal();
 updateStateOfSensitive()
 updateFatigueSlots();
